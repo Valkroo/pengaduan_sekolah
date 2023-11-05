@@ -16,16 +16,22 @@
                         <img src="{{ asset('img/logo.png') }}" alt="" class="img-fluid" width="250px">
                     </div>
                     <div class="" style="width: 30rem">
-                        <form action="" class="mt-2 p-2">
-                              <h3 class="card-title text-center mb-3">Silahkan daftar</h3>
+                        <form action="/register" class="mt-2 p-2"  method="POST">
                             @csrf
+                            @method('post')
+                              <h3 class="card-title text-center mb-3">Silahkan daftar</h3>
                                 <div class="mb-3">
                                     <label for="nama" class="form-label">Nama</label>
-                                    <input type="nama" name="nama" class="form-control" id="email">
+                                    <input type="text" name="nama" class="form-control" id="nama">
                                 </div>
                                 <div class="mb-3">
                                     <label for="kelas" class="form-label">Kelas</label>
-                                    <input type="kelas" name="kelas" class="form-control" id="kelas">
+                                    <select class="form-select" name="kelas" aria-label="Default select example" >
+                                        <option >-->Pilih<--</option>
+                                        <option value="XII">XII</option>
+                                        <option value="XI">XI</option>
+                                        <option value="X">X</option>
+                                    </select>
                                 </div>
                                 <div class="mb-3">
                                     <label for="email" class="form-label">Email</label>

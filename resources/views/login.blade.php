@@ -11,12 +11,21 @@
     <div class="container">
         <div class="d-flex justify-content-center min-vh-100 gap-5 align-items-center">
             <div class="card" style="width: 35rem;">
+                @if (session('success'))
+                <div class="d-flex justify-content-center mt-3">
+                    <div class="alert alert-success alert-dismissible fade show col-lg-9" role="alert">
+                        {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+                @endif
                 <div class="card-body">
                     <div class="d-flex align-items-center justify-content-center">
                         <img src="{{ asset('img/logo.png') }}" alt="" class="img-fluid" width="200px">
                     </div>
                   <h3 class="card-title text-center mt-3">Silahkan Login</h3>
-                  <form action="" class="mt-2 p-3">
+                  <form action="/" class="mt-2 p-3" method="POST">
+                    @method('post')
                     @csrf
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>

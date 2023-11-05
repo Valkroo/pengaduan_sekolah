@@ -30,26 +30,17 @@
       <div class="position-sticky pt-3 sidebar-sticky">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/dashboard">
+            <a class="nav-link " aria-current="page" href="/admin/dashboard">
               <span data-feather="home" class="align-text-bottom"></span>
               Home  
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/dashboard/form-pengaduan">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-plus" viewBox="0 0 16 16">
-                <path d="M8 6.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 .5-.5z"/>
-                <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z"/>
-              </svg>
-              Buat pengaduan
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/dashboard/profil">
+          <li class="nav-item ">
+            <a class="nav-link active" href="/admin/dashboard/daftar-user">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
                 <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"/>
               </svg>
-              Profil
+              Daftar User
             </a>
           </li>
           <li class="nav-item">
@@ -79,7 +70,7 @@
           </div>
       @endif
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Data Pengaduan</h1>
+        <h1 class="h2">Data User</h1>
       </div>
 
       <div class="table-responsive">
@@ -87,27 +78,27 @@
           <thead>
             <tr>
               <th scope="col">No.</th>
-              <th scope="col">Tanggal</th>
-              <th scope="col">Lokasi Kejadian</th>
-              <th scope="col">Status</th>
-              <th scope="col">Pesan Laporan</th>
+              <th scope="col">Nama</th>
+              <th scope="col">Kelas</th>
+              <th scope="col">Jurusan</th>
+              <th scope="col">Jenis Kelamin</th>
               <th scope="col">Aksi</th>
             </tr>
           </thead>
           <tbody>
-            @foreach ($pengaduan as $data)
+            @foreach ($list->skip(1) as $data)
             <tr>
               <td>{{ $loop->iteration }}</td>
-              <td>{{ $data->tanggal }}</td>
-              <td>{{ $data->lokasi }}</td>
-              <td>{{ $data->status }}</td>
-              <td>{{ $data->pesan_pengaduan }}</td>
+              <td>{{ $data->nama }}</td>
+              <td>{{ $data->kelas }}</td>
+              <td>{{ $data->jurusan }}</td>
+              <td>{{ $data->jenis_kelamin }}</td>
               <td>
                 <div class="d-flex gap-2">
                   <div class="">
-                      <a href="/dashboard/{{ $data->id }}/edit" class="btn btn-success">Edit</a>
+                      <a href="/admin/dashboard/daftar-user/{{ $data->id }}/edit" class="btn btn-success">Edit</a>
                   </div>
-                  <form action="/dashboard/{{ $data->id }}" method="post">
+                  <form action="/admin/dashboard/daftar-user/{{ $data->id }}" method="post">
                       @csrf
                       @method('delete')
                       <button class="btn btn-danger">Delete</button>

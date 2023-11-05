@@ -7,47 +7,24 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class UserController extends Controller
+class AdminController extends Controller
 {
     public function index() {
         $user = Auth::user();
-        $report = Report::where('user_id', $user->id)->get();
+        $report = Report::all();
         
-        return view('user.dashboard',[
+        return view('admin.dashboard',[
             'users' => $user,
             'pengaduan' => $report,
         ]);
     }
-    public function pengaduan() {
-        return view('user.pengaduan', [
-            'users' => Auth::user()
-        ]);
-    }
-
-    public function storePengaduan(Request $request) {
-        $validate = $request->validate([
-        'tanggal' => 'required',
-        'lokasi' => 'required',
-        'pesan_pengaduan' => 'required',
-    ]);
-        $data = new Report();
-        $data->user_id = Auth::user()->id;
-        $data->tanggal = $validate['tanggal'];
-        $data->lokasi = $validate['lokasi'];
-        $data->pesan_pengaduan = $validate['pesan_pengaduan'];
-        $data->save();
-        return redirect('/dashboard')->with('success', 'Laporan Berhasil di Buat');
-    }
-
+    
     public function editPengaduan($id) {
         $report = Report::find($id);
-        if($report->user_id !== auth()->user()->id)
-        {
-            abort(403);
-        }
-        return view('user.edit', [
+        return view('admin.edit', [
             'users' => Auth::user(),
             'report' => $report,
+            'status' => $report->status,
         ]);
     }
 
@@ -55,33 +32,44 @@ class UserController extends Controller
         $validate = $request->validate([
         'tanggal' => 'required',
         'lokasi' => 'required',
+        'status' => 'required',
         'pesan_pengaduan' => 'required',
     ]);
     $data = Report::find($id);
-    $data->user_id = Auth::user()->id;
     $data->tanggal = $validate['tanggal'];
     $data->lokasi = $validate['lokasi'];
+    $data->status = $validate['status'];
     $data->pesan_pengaduan = $validate['pesan_pengaduan'];
     $data->update();
-    return redirect('/dashboard')->with('success', 'Laporan Berhasil di Edit');
+    return redirect('/admin/dashboard')->with('success', 'Laporan Berhasil di Edit');
     }
 
     public function destroyPengaduan($id) {
         $data = Report::find($id);
         $data->delete();
-        return redirect('/dashboard')->with('success', 'Laporan Berhasil di Hapus');
+        return redirect('/admin/dashboard')->with('success', 'Laporan Berhasil di Hapus');
     }
 
-    public function profil() {
+    public function listUser() {
         $user = Auth::user();
-        return view('user.profil', [
+        $list = User::all();
+        
+        return view('admin.listUser',[
+            'users' => $user,
+            'list' => $list,
+        ]);
+    }
+
+    public function editUser($id) {
+        $user = User::find($id);
+        return view('admin.editUser', [
             'users' => $user,
             'jurusan' => $user->jurusan,
             'jenis_kelamin' => $user->jenis_kelamin,
         ]);
     }
 
-    public function updateProfil(Request $request) {
+    public function updateUser(Request $request, $id) {
         $validate = $request->validate([
             'nama' => 'required|max:255',
             'kelas' => 'required|max:255',
@@ -89,13 +77,18 @@ class UserController extends Controller
             'jurusan' => 'required|max:255',
         ]);
 
-        $id = Auth::user()->id;
         $user = User::where('id', $id)->first();
         $user->nama = $validate['nama'];
         $user->kelas = $validate['kelas'];
         $user->jenis_kelamin = $validate['jenis_kelamin'];
         $user->jurusan = $validate['jurusan'];
         $user->update();
-        return redirect('/dashboard')->with('success', 'User Berhasil di Edit');
+        return redirect('/admin/dashboard/daftar-user')->with('success', 'User Berhasil di Edit');
+    }
+
+    public function destroyUser($id) {
+        $data = User::find($id);
+        $data->delete();
+        return redirect('/admin/dashboard/daftar-user')->with('success', 'User Berhasil di Hapus');
     }
 }

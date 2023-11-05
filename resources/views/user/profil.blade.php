@@ -14,15 +14,15 @@
   </head>
   <body>
     
-<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-  <div class="d-flex p-2 navbar-brand col-md-3 col-lg-2">
-    <img src="{{ asset('img/logo.png') }}" alt="" class="img-fluid" width="50px">
-    <a class="navbar-brand me-0 px-3 fs-6" href="#">{{ $users->nama }}</a>
-  </div>
-  <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-</header>
+    <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+      <div class="d-flex p-2 navbar-brand col-md-3 col-lg-2">
+        <img src="{{ asset('img/logo.png') }}" alt="" class="img-fluid" width="50px">
+        <a class="navbar-brand me-0 px-3 fs-6" href="#">{{ $users->nama }}</a>
+      </div>
+      <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </header>
 
 <div class="container-fluid">
   <div class="row">
@@ -30,7 +30,7 @@
       <div class="position-sticky pt-3 sidebar-sticky">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/dashboard">
+            <a class="nav-link" aria-current="page" href="/dashboard">
               <span data-feather="home" class="align-text-bottom"></span>
               Home  
             </a>
@@ -45,7 +45,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/dashboard/profil">
+            <a class="nav-link active" href="/dashboard/profil">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
                 <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"/>
               </svg>
@@ -70,55 +70,41 @@
     </nav>
 
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-      @if (session('success'))
-          <div class="d-flex justify-content-center mt-3">
-            <div class="alert alert-success alert-dismissible fade show col-lg-9" role="alert">
-              {{ session('success') }}
-              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-          </div>
-      @endif
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Data Pengaduan</h1>
+        <h1 class="h2">Profil Anda</h1>
       </div>
-
-      <div class="table-responsive">
-        <table class="table table-striped table-sm">
-          <thead>
-            <tr>
-              <th scope="col">No.</th>
-              <th scope="col">Tanggal</th>
-              <th scope="col">Lokasi Kejadian</th>
-              <th scope="col">Status</th>
-              <th scope="col">Pesan Laporan</th>
-              <th scope="col">Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            @foreach ($pengaduan as $data)
-            <tr>
-              <td>{{ $loop->iteration }}</td>
-              <td>{{ $data->tanggal }}</td>
-              <td>{{ $data->lokasi }}</td>
-              <td>{{ $data->status }}</td>
-              <td>{{ $data->pesan_pengaduan }}</td>
-              <td>
-                <div class="d-flex gap-2">
-                  <div class="">
-                      <a href="/dashboard/{{ $data->id }}/edit" class="btn btn-success">Edit</a>
-                  </div>
-                  <form action="/dashboard/{{ $data->id }}" method="post">
-                      @csrf
-                      @method('delete')
-                      <button class="btn btn-danger">Delete</button>
-                  </form>
-              </div>
-              </td>
-            </tr>
-            @endforeach
-          </tbody>
-        </table>
-      </div>
+      <form action="/dashboard/profil" method="POST">
+        @method('post')
+        @csrf
+        <div class="mb-3">
+            <label for="nama" class="form-label">Nama</label>
+            <input type="nama" name="nama" class="form-control" id="nama" value="{{ old('nama',$users->nama) }}">
+        </div>
+        <div class="mb-3">
+            <label for="kelas" class="form-label">Kelas</label>
+            <input type="text" name="kelas" class="form-control" id="kelas" value="{{ old('kelas',$users->kelas) }}">
+        </div>
+        <div class="mb-3">
+            <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
+            <select class="form-select" name="jenis_kelamin" aria-label="Default select example" >
+              <option >-->Pilih<--</option>
+              <option value="Laki-laki" {{ $jenis_kelamin == "Laki-laki" ? 'selected' : ''}}>Laki-laki</option>
+              <option value="Perempuan" {{ $jenis_kelamin == "Perempuan" ? 'selected' : ''}}>Perempuan</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="jurursan" class="form-label">Jurusan</label>
+            <select class="form-select" name="jurusan" aria-label="Default select example">
+              <option >-->Pilih<--</option>
+              <option value="RPL" {{ $jurusan == "RPL" ? 'selected' : ''}}>RPL</option>
+              <option value="AKL" {{ $jurusan == "AKL" ? 'selected' : ''}}>AKL</option>
+              <option value="OTKP" {{ $jurusan == "OTKP" ? 'selected' : ''}}>OTKP</option>
+              <option value="BDP" {{ $jurusan == "BDP" ? 'selected' : ''}}>BDP</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-success">Simpan</button>
+      </form>
+      
     </main>
   </div>
 </div>
